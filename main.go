@@ -1,16 +1,31 @@
 package main
 
 import (
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
 	"libvirt.org/go/libvirt"
+
 	"stuvps.app/vm-ctrl-api/models"
 	"stuvps.app/vm-ctrl-api/vm"
 )
 
+var upgrader = websocket.Upgrader{
+    ReadBufferSize:  1024,
+    WriteBufferSize: 1024,
+}
+
 func main() {
-	println("Hello, World!")
-	conn, err := libvirt.NewConnect("qemu:///system")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	conn, err := libvirt.NewConnect(os.Getenv("QEMU_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -36,7 +51,7 @@ func main() {
 			Name:          vmName,
 			Memory:        req.Resources.Memory,
 			VCPUs:         req.Resources.VCPUs,
-			InterfaceName: req.Resources.InterfaceName,
+			InterfaceName: req.Resources.NetworkInterface,
 			Password:      req.CloudInit.Password,
 			Network: vm.VMConfigNetwork{
 				IPAddress: req.CloudInit.IPAddress,
@@ -51,6 +66,10 @@ func main() {
 		}
 
 		c.JSON(200, gin.H{"status": "VM created successfully", "vm_name": vmName})
+	})
+
+	r.GET("/console",  func(c *gin.Context) {
+		
 	})
 	r.Run()
 }
