@@ -36,7 +36,7 @@ func main() {
 			Name:          vmName,
 			Memory:        req.Resources.Memory,
 			VCPUs:         req.Resources.VCPUs,
-			InterfaceName: "virbr0",
+			InterfaceName: req.Resources.InterfaceName,
 			Password:      req.CloudInit.Password,
 			Network: vm.VMConfigNetwork{
 				IPAddress: req.CloudInit.IPAddress,

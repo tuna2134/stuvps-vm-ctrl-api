@@ -25,7 +25,7 @@ type VMConfigNetwork struct {
 func CreateVM(conn *libvirt.Connect, config VMConfig) error {
 	mac := gen.GenerateMACAddress()
 	cloud_init.CreateDisk(
-		config.BasePath + config.Name + "/seek.iso",
+		config.BasePath + "/" + config.Name + "/seek.iso",
 		config.Password,
 		mac,
 		config.Network.IPAddress,

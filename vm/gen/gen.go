@@ -17,7 +17,7 @@ func GenerateMACAddress() string {
 }
 
 func CreateDomainXML(basePath string, name string, memory int, vcpus int, mac string, interfaceName string) (string, error) {
-	qcow2Path := basePath + name + "/image.qcow2"
+	qcow2Path := basePath + "/" + name + "/image.qcow2"
 	domain := libvirtxml.Domain{
 		Type: "kvm",
 		Name: name,

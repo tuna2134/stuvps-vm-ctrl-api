@@ -13,7 +13,8 @@ type PostVMRequestCloudInit struct {
 }
 
 type PostVMRequestResources struct {
-	Memory int `json:"memory"`
-	VCPUs  int `json:"vcpus"`
-	Disk   int `json:"disk"`
+	Memory  int 							`json:"memory"`
+	VCPUs   int 							`json:"vcpus"`
+	Disk  	int                             `json:"disk"`
+	NetworkInterface string 				`json:"network_interface"`
 }
