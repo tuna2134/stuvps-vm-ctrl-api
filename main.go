@@ -83,6 +83,10 @@ func main() {
 		defer wsConn.Close()
 
 		stream, err := conn.NewStream(1)
+		if err != nil {
+			log.Printf("Failed to create stream: %+v\n", err)
+			return
+		}
 		err = domain.OpenConsole("serial0", stream, 2)
 		if err != nil {
 			log.Printf("Failed to set websocket upgrade: %+v\n", err)
