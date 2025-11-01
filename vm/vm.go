@@ -1,20 +1,20 @@
 package vm
 
 import (
+	"libvirt.org/go/libvirt"
 	"stuvps.app/vm-ctrl-api/cloud_init"
 	"stuvps.app/vm-ctrl-api/vm/gen"
-	"libvirt.org/go/libvirt"
 )
 
 type VMConfig struct {
-	BasePath	  string
-	Name		  string
-	Memory		  int
-	VCPUs		  int
+	BasePath      string
+	Name          string
+	Memory        int
+	VCPUs         int
 	InterfaceName string
-	Password	  string
-	Network		  VMConfigNetwork
-	Script    	  string
+	Password      string
+	Network       VMConfigNetwork
+	Script        string
 }
 
 type VMConfigNetwork struct {
@@ -25,7 +25,7 @@ type VMConfigNetwork struct {
 func CreateVM(conn *libvirt.Connect, config VMConfig) error {
 	mac := gen.GenerateMACAddress()
 	cloud_init.CreateDisk(
-		config.BasePath + "/" + config.Name + "/seek.iso",
+		config.BasePath+"/"+config.Name+"/seek.iso",
 		config.Password,
 		mac,
 		config.Network.IPAddress,
