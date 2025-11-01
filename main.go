@@ -68,7 +68,7 @@ func main() {
 		c.JSON(200, gin.H{"status": "VM created successfully", "vm_name": vmName})
 	})
 
-	r.GET("/vms/:vmId/console/", func(c *gin.Context) {
+	r.GET("/vms/:vmId/console", func(c *gin.Context) {
 		domain, err := conn.LookupDomainByName(c.Param("vmId"))
 		if err != nil {
 			c.JSON(404, gin.H{"error": "VM not found"})
