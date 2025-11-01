@@ -99,15 +99,40 @@ func main() {
 					return
 				}
 				// tune the byte size
+				p = p[:size]
+				consoleMsg := models.ConsoleMessage{
+					Type:    "server",
+					Message: string(p),
+				}
+				err = wsConn.WriteJSON(consoleMsg)
+				if err != nil {
+					log.Printf("Failed to write websocket message: %+v\n", err)
+					return
+				}
 			}
 		}
 		go ConsoleReciever()
 
 		WebsocketReciever := func() {
-			var msg models.ConsoleMessage
-			err := wsConn.ReadJSON(&msg)
-			if err != nil {
-				log.Printf("Failed to read websocket message: %+v\n", err)
+			for {
+				var msg models.ConsoleMessage
+				err := wsConn.ReadJSON(&msg)
+				if err != nil {
+					log.Printf("Failed to read websocket message: %+v\n", err)
+				}
+				if msg.Type != "client" {
+					continue
+				}
+				sent, err := stream.Send([]byte(msg.Message))
+				if err != nil {
+					log.Printf("Failed to send to console stream: %+v\n", err)
+					return
+				}
+				if sent < 0 {
+					stream.Abort()
+					log.Printf("Stream aborted")
+					return
+				}
 			}
 		}
 		WebsocketReciever()

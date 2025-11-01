@@ -20,6 +20,6 @@ type PostVMRequestResources struct {
 }
 
 type ConsoleMessage struct {
-	Type    int    `json:"type"`
+	Type    string `json:"type"`
 	Message string `json:"message"`
 }
