@@ -3,8 +3,8 @@ package vm
 import (
 	"libvirt.org/go/libvirt"
 	"stuvps.app/vm-ctrl-api/cloud_init"
-	"stuvps.app/vm-ctrl-api/vm/gen"
 	"stuvps.app/vm-ctrl-api/qcow2"
+	"stuvps.app/vm-ctrl-api/vm/gen"
 )
 
 type VMConfig struct {
