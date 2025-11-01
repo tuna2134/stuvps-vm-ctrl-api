@@ -4,9 +4,11 @@ import (
 	"libvirt.org/go/libvirt"
 	"stuvps.app/vm-ctrl-api/cloud_init"
 	"stuvps.app/vm-ctrl-api/vm/gen"
+	"stuvps.app/vm-ctrl-api/qcow2"
 )
 
 type VMConfig struct {
+	BaseImagePath string
 	BasePath      string
 	Name          string
 	Memory        int
@@ -32,6 +34,8 @@ func CreateVM(conn *libvirt.Connect, config VMConfig) error {
 		config.Network.Gateway,
 		config.Script,
 	)
+	qcow2.ConvertImage(config.BaseImagePath, config.BasePath+"/"+config.Name+"/image.qcow2")
+	qcow2.ResizeImage(config.BasePath+"/"+config.Name+"/image.qcow2", 25)
 	domainXML, err := gen.CreateDomainXML(config.BasePath, config.Name, config.Memory, config.VCPUs, mac, config.InterfaceName)
 	if err != nil {
 		return err

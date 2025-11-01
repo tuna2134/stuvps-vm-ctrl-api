@@ -47,6 +47,7 @@ func main() {
 		vmName := uuid.New().String()
 
 		config := vm.VMConfig{
+			BaseImagePath: os.Getenv("BASE_IMAGE_PATH"),
 			BasePath:      "/var/lib/libvirt/images/",
 			Name:          vmName,
 			Memory:        req.Resources.Memory,
